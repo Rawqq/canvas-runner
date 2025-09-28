@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="UTF-8">
+  <title>Canvas Runner</title>
+  <style>
+    canvas { background: #f0f0f0; display: block; margin: 0 auto; }
+  </style>
+</head>
+<body>
+  <canvas id="gameCanvas" width="600" height="300"></canvas>
+  <script>
+    const canvas = document.getElementById('gameCanvas');
+    const ctx = canvas.getContext('2d');
+    let playerX = 50;
+    let playerY = 250;
+    const gravity = 0.5;
+    let velocityY = 0;
+    let isJumping = false;
+    function jump() {
+      if (!isJumping) {
+        velocityY = -10;
+        isJumping = true;
+      }
+    }
+    document.addEventListener('keydown', e => {
+      if (e.code === 'Space') jump();
+    });
+    function update() {
+      velocityY += gravity;
+      playerY += velocityY;
+      if (playerY > 250) {
+        playerY = 250;
+        velocityY = 0;
+        isJumping = false;
+      }
+    }
+    function draw() {
+      ctx.clearRect(0, 0, canvas.width, canvas.height);
+      ctx.fillStyle = 'blue';
+      ctx.fillRect(playerX, playerY, 30, 30);
+    }
+    function loop() {
+      update();
+      draw();
+      requestAnimationFrame(loop);
+    }
+    loop();
+  </script>
+</body>
+</html>
